@@ -1,3 +1,8 @@
+//@Template Author: Richard Veras
+//@author Joseph Rodriguez Ben Cruickshank
+
+//Refrence for selection sort algorithm:
+//https://www.geeksforgeeks.org/dsa/selection-sort-algorithm-2/
 
 /*
   This is a small program to demonstrate gcov. It
@@ -11,8 +16,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void selectionSort(int arr[], int n);
-void swap(int *x, int *y);
+void selectionSort(float arr[], int n);
+void swap(float *x, float *y);
 
 int main(int argc, char * argv[]) {
   // No arguments passed
@@ -33,8 +38,9 @@ int main(int argc, char * argv[]) {
   // more than 1 argument
   else
     printf("I need less arguments!\n");
-
+  //Template code ends here
   
+
   FILE *input = fopen(argv[1], "r"); // opens the input file based on first execution argument with read permission.
   if (input == NULL)
   { // error handling for file opening. This may be removed to check for coverage.
@@ -42,46 +48,52 @@ int main(int argc, char * argv[]) {
     return 1;
   }
 
-  int n; // Variable to hold the size of the array.
-
-  // Reads the first line of the input file to determine the size of the array.
-  // It returns a 1 if successful and assigns the to n based of the memory address of n.
-  // It also checks to make that the allocation would be valid given the context.
-  // An easy example is if the user enters a negative number which would be accepted by %d but would be invalid for an array size.
-  if (fscanf(input, "%d", &n) != 1 || n <= 0)
-  {
-    printf("Invalid array size in input file.\n");
-    fclose(input);
-    return 1;
-  }
-
-  float *arr = malloc(n * sizeof(float));
+  int n = 0; // Variable to hold the size of the array.
+  float val; // Variable to hold each float value read from the file.
+  
+  float *arr = malloc(1 * sizeof(float));
   // Removed arr == null to check for coverage.
   // An invalid n value would cause malloc to return null but this is allready checked for above.
 
   // Write the array elements from the file into the array.
   // fscan picks up where it left off skipping the int determining the size of the array.
-  for (int i = 0; i < n; i++)
-  {
-    fscanf(input, "%f", &arr[i]);
+  while(fscanf(input, "%f", &val) == 1){
+
+    //Reallocate memory for the array to hold one more element.
+    //We don't know the size in advance this time so it needs to be increase each time.
+    float *temp = realloc(arr, (n + 1) * sizeof(float));
+    if (temp == NULL) {
+            printf("Memory allocation failed for array.\n");
+            free(arr);
+            fclose(input);
+            return 1;
+    }
+
+    arr = temp; 
+    arr[n] = val; 
+    n++;
   }
 
 
   //Selection sort function call.
   //Sorting algorithm documentation link is above.
   selectionSort(arr,n);
-
-
+  
+  for(int i = 0; i < n; i++)
+  {
+    printf("%f ", arr[i]);
+  }
+  printf("\n");
   free(arr); // Free the allocated memory for the array.
   fclose(input); // Close the input file.  
   return 0;
 }
 
 
-void selectionSort(int arr[], int n) {
+void selectionSort(float arr[], int n) {
     int min;
     for (int i = 0; i < n - 1; i++) {
-        min = arr[i];
+        min = i;
         for (int j = i + 1; j < n; j++) {
             if (arr[j] < arr[min]) {
                 min = j;
@@ -93,8 +105,8 @@ void selectionSort(int arr[], int n) {
     }
 }
 
-void swap(int *x, int *y) {
-    int temp = *x;
+void swap(float *x, float *y) {
+    float temp = *x;
     *x = *y;
     *y = temp;
 }

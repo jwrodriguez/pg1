@@ -4,6 +4,7 @@
 # We want to cover 100% of prog through these tests
 run-tests-coverage: build
 	./prog
+	./prog input1
 	./prog 3
 	./prog 8
 	./prog 5 4
