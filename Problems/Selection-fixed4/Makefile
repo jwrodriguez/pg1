@@ -4,10 +4,10 @@
 # We want to cover 100% of prog through these tests
 run-tests-coverage: build
 	./prog
-	./prog input1
-	./prog 3
-	./prog 8
-	./prog 5 4
+	./prog input1 output1
+	./prog input2 output2
+	./prog inputNotExist outputNotExist
+	./prog input1 /tmp/doesnotexist/output2
 	gcov prog.c
 
 # Run Valgrind to find memory leaks, requires that we build the code

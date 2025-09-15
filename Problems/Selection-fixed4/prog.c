@@ -24,22 +24,13 @@ int main(int argc, char * argv[]) {
   // note: argv[0] is the name of the
   // program, so we always have at least
   // 1 value in argv.
-  if (argc == 1 + 0)
-    printf("I need more arguments!\n");
-  // If we have 1 argument
-  else if (argc == 1 + 1) {
-    // convert the argument to a value
-    int val = atoi(argv[1]);
-    if (val % 2 == 0)
-      printf("Even!\n");
-    else
-      printf("Odd\n");
+  if (argc != 3)
+  {
+    printf("Error: Please exactly two arguments.\n");
+    printf("Format: %s input_name.extenstion output_name.extension \n", argv[0]);
+    return 1;
   }
-  // more than 1 argument
-  else
-    printf("I need less arguments!\n");
-  //Template code ends here
-  
+
 
   FILE *input = fopen(argv[1], "r"); // opens the input file based on first execution argument with read permission.
   if (input == NULL)
@@ -48,30 +39,18 @@ int main(int argc, char * argv[]) {
     return 1;
   }
 
-  int n = 0; // Variable to hold the size of the array.
+  int n = 4; // Variable to hold the size of the array.
   float val; // Variable to hold each float value read from the file.
   
-  float *arr = malloc(1 * sizeof(float));
+  float *arr = malloc(n * sizeof(float));
   // Removed arr == null to check for coverage.
   // An invalid n value would cause malloc to return null but this is allready checked for above.
 
   // Write the array elements from the file into the array.
   // fscan picks up where it left off skipping the int determining the size of the array.
-  while(fscanf(input, "%f", &val) == 1){
-
-    //Reallocate memory for the array to hold one more element.
-    //We don't know the size in advance this time so it needs to be increase each time.
-    float *temp = realloc(arr, (n + 1) * sizeof(float));
-    if (temp == NULL) {
-            printf("Memory allocation failed for array.\n");
-            free(arr);
-            fclose(input);
-            return 1;
-    }
-
-    arr = temp; 
-    arr[n] = val; 
-    n++;
+  for (int i = 0; i < n; i++)
+  {
+    fscanf(input, "%f", &arr[i]);
   }
 
 
@@ -79,9 +58,23 @@ int main(int argc, char * argv[]) {
   //Sorting algorithm documentation link is above.
   selectionSort(arr,n);
   
+  //Prints Sorted Array to the console.
   for(int i = 0; i < n; i++)
   {
-    printf("%f ", arr[i]);
+    printf("%2f ", arr[i]);
+  }
+  printf("\n");
+
+  FILE *output = fopen(argv[2], "w"); // argv[2] is the output file given from exercution arguments.
+  if (output == NULL){
+    free(arr);
+    fclose(input);
+    printf("Error writing output file.\n");
+    return 1;
+  }
+  // Write the sorted array to the output file.
+  for (int i = 0; i < n; i++) {
+    fprintf(output, "%.2f\n", arr[i]);  // one float per line
   }
   printf("\n");
   free(arr); // Free the allocated memory for the array.
