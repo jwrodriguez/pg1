@@ -1,0 +1,100 @@
+        -:    0:Source:prog.c
+        -:    0:Graph:prog.gcno
+        -:    0:Data:prog.gcda
+        -:    0:Runs:5
+        -:    1:/*
+        -:    2:  This is a small program to demonstrate gcov. It
+        -:    3:  can take no arguments or 1 argument. It prints
+        -:    4:  a message if more than one is given. If the argument's
+        -:    5:  value is odd it prints out odd, otherwise even
+        -:    6:  The goal is to show you need multiple test cases
+        -:    7:  to cover all of the code.
+        -:    8:  -richard.m.veras@ou.edu
+        -:    9:*/
+        -:   10:#include <stdio.h>
+        -:   11:#include <stdlib.h>
+        -:   12:
+        -:   13:void selectionSort(float arr[], int n);
+        -:   14:void swap(float *x, float *y);
+        -:   15:
+        5:   16:int main(int argc, char * argv[]) {
+        -:   17:  // No arguments passed
+        -:   18:  // note: argv[0] is the name of the
+        -:   19:  // program, so we always have at least
+        -:   20:  // 1 value in argv.
+        5:   21:  if (argc != 3)
+        -:   22:  {
+        1:   23:    printf("Error: Please exactly two arguments.\n");
+        1:   24:    printf("Format: %s input_name.extenstion output_name.extension \n", argv[0]);
+        1:   25:    return 1;
+        -:   26:  }
+        -:   27:
+        -:   28:
+        4:   29:  FILE *input = fopen(argv[1], "r"); // opens the input file based on first execution argument with read permission.
+        4:   30:  if (input == NULL)
+        -:   31:  { // error handling for file opening. This may be removed to check for coverage.
+        1:   32:    printf("Error opening input file.\n");
+        1:   33:    return 1;
+        -:   34:  }
+        -:   35:
+        3:   36:  int n = 4; // Variable to hold the size of the array.
+        -:   37:  float val; // Variable to hold each float value read from the file.
+        -:   38:  
+        3:   39:  float *arr = malloc(n * sizeof(float));
+        -:   40:  // Removed arr == null to check for coverage.
+        -:   41:  // An invalid n value would cause malloc to return null but this is allready checked for above.
+        -:   42:
+        -:   43:  // Write the array elements from the file into the array.
+        -:   44:  // fscan picks up where it left off skipping the int determining the size of the array.
+       15:   45:  for (int i = 0; i < n; i++)
+        -:   46:  {
+       12:   47:    fscanf(input, "%f", &arr[i]);
+        -:   48:  }
+        -:   49:
+        -:   50:
+        -:   51:  //Selection sort function call.
+        -:   52:  //Sorting algorithm documentation link is above.
+        3:   53:  selectionSort(arr,n);
+        -:   54:  
+        -:   55:  //Prints Sorted Array to the console.
+       15:   56:  for(int i = 0; i < n; i++)
+        -:   57:  {
+       12:   58:    printf("%2f ", arr[i]);
+        -:   59:  }
+        3:   60:  printf("\n");
+        -:   61:
+        3:   62:  FILE *output = fopen(argv[2], "w"); // argv[2] is the output file given from exercution arguments.
+        3:   63:  if (output == NULL){
+        1:   64:    free(arr);
+        1:   65:    fclose(input);
+        1:   66:    printf("Error writing output file.\n");
+        1:   67:    return 1;
+        -:   68:  }
+        -:   69:  // Write the sorted array to the output file.
+       10:   70:  for (int i = 0; i < n; i++) {
+        8:   71:    fprintf(output, "%.2f\n", arr[i]);  // one float per line
+        -:   72:  }
+        2:   73:  printf("\n");
+        2:   74:  free(arr); // Free the allocated memory for the array.
+        2:   75:  fclose(input); // Close the input file.  
+        2:   76:  return 0;
+        -:   77:}
+        3:   78:void selectionSort(float arr[], int n) {
+        -:   79:    int min;
+       12:   80:    for (int i = 0; i < n - 1; i++) {
+        9:   81:        min = i;
+       27:   82:        for (int j = i + 1; j < n; j++) {
+        -:   83:            // Use arithmetic to avoid conditional
+       18:   84:            int condition = arr[j] < arr[min];
+       18:   85:            min = condition * j + (1 - condition) * min;
+        -:   86:        }
+        -:   87:        
+        9:   88:        swap(&arr[min], &arr[i]);
+        -:   89:    }
+        3:   90:}
+        -:   91:
+        9:   92:void swap(float *x, float *y) {
+        9:   93:    float temp = *x;
+        9:   94:    *x = *y;
+        9:   95:    *y = temp;
+        9:   96:}

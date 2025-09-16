@@ -1,3 +1,9 @@
+//@Template Author: Richard Veras
+//@author Joseph Rodriguez Ben Cruickshank
+
+//Refrence for selection sort algorithm:
+//https://www.geeksforgeeks.org/dsa/selection-sort-algorithm-2/
+
 /*
   This is a small program to demonstrate gcov. It
   can take no arguments or 1 argument. It prints
