@@ -88,26 +88,20 @@ void selectionSort(float arr[], int n) {
     int min = 0;
     // i = 0
     min = 0;
-    int condition = arr[1] < arr[min];
-    min = condition * 1 + (1 - condition) * min;
-    condition = arr[2] < arr[min];
-    min = condition * 2 + (1 - condition) * min;
-    condition = arr[3] < arr[min];
-    min = condition * 3 + (1 - condition) * min;
+    if (arr[1] < arr[min]) min = 1;
+    if (arr[2] < arr[min]) min = 2;
+    if (arr[3] < arr[min]) min = 3;
     swap(&arr[min], &arr[0]);
 
     // i = 1
     min = 1;
-    condition = arr[2] < arr[min];
-    min = condition * 2 + (1 - condition) * min;
-    condition = arr[3] < arr[min];
-    min = condition * 3 + (1 - condition) * min;
+    if (arr[2] < arr[min]) min = 2;
+    if (arr[3] < arr[min]) min = 3;
     swap(&arr[min], &arr[1]);
 
     // i = 2
     min = 2;
-    condition = arr[3] < arr[min];
-    min = condition * 3 + (1 - condition) * min;
+    if (arr[3] < arr[min]) min = 3;
     swap(&arr[min], &arr[2]);
 }
 

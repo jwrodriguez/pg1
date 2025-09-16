@@ -94,25 +94,34 @@
         3:   90:    int min = 0;
         -:   91:    // i = 0
         3:   92:    min = 0;
-       3*:   93:    if (arr[1] < arr[min]) min = 1;
-       3*:   94:    if (arr[2] < arr[min]) min = 2;
-       3*:   95:    if (arr[3] < arr[min]) min = 3;
-        3:   96:    swap(&arr[min], &arr[0]);
-        -:   97:
-        -:   98:    // i = 1
-        3:   99:    min = 1;
-       3*:  100:    if (arr[2] < arr[min]) min = 2;
-       3*:  101:    if (arr[3] < arr[min]) min = 3;
-        3:  102:    swap(&arr[min], &arr[1]);
-        -:  103:
-        -:  104:    // i = 2
-        3:  105:    min = 2;
-        3:  106:    if (arr[3] < arr[min]) min = 3;
-        3:  107:    swap(&arr[min], &arr[2]);
-        3:  108:}
-        -:  109:
-        9:  110:void swap(float *x, float *y) {
-        9:  111:    float temp = *x;
-        9:  112:    *x = *y;
-        9:  113:    *y = temp;
-        9:  114:}
+        3:   93:    int condition = arr[1] < arr[min];
+        3:   94:    min = condition * 1 + (1 - condition) * min;
+        3:   95:    condition = arr[2] < arr[min];
+        3:   96:    min = condition * 2 + (1 - condition) * min;
+        3:   97:    condition = arr[3] < arr[min];
+        3:   98:    min = condition * 3 + (1 - condition) * min;
+        3:   99:    swap(&arr[min], &arr[0]);
+        -:  100:
+        -:  101:    // i = 1
+        3:  102:    min = 1;
+        3:  103:    condition = arr[2] < arr[min];
+        3:  104:    min = condition * 2 + (1 - condition) * min;
+        3:  105:    condition = arr[3] < arr[min];
+        3:  106:    min = condition * 3 + (1 - condition) * min;
+        3:  107:    swap(&arr[min], &arr[1]);
+        -:  108:
+        -:  109:    // i = 2
+        3:  110:    min = 2;
+        3:  111:    condition = arr[3] < arr[min];
+        3:  112:    min = condition * 3 + (1 - condition) * min;
+        3:  113:    swap(&arr[min], &arr[2]);
+        3:  114:}
+        -:  115:
+        9:  116:void swap(float *x, float *y) {
+        9:  117:    float temp = *x;
+        9:  118:    *x = *y;
+        9:  119:    *y = temp;
+        9:  120:}
+        -:  121:
+        -:  122:
+        -:  123:    
